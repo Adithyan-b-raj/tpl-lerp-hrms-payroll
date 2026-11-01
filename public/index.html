@@ -3,470 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PEOPLEPULSE HRMS — Large ERP</title>
+  <title data-wl-brand>PULSE HRMS // People-Ops & Payroll</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="theme-tokens.css">
   <script src="whitelabel.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: var(--font-primary);
-      background-color: var(--bg-main);
-      color: var(--color-dark);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg-main, #F8FAFC);
+      color: #111827;
+      font-family: var(--font-primary, 'Plus Jakarta Sans', sans-serif);
+      padding: 30px;
     }
-    .top-bar {
-      background: var(--bg-canvas);
-      color: var(--color-dark);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
-    }
-    .nav-container {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 15px 24px;
+    .ops-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-    }
-    .brand-logo {
-      font-family: var(--font-accent);
-      font-size: 23px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--color-dark);
-      text-decoration: none;
-    }
-    .brand-logo span {
-      font-family: var(--font-primary);
-      color: var(--color-primary);
-      font-size: 11px;
-      letter-spacing: 2px;
-      display: block;
-      margin-top: -2px;
-    }
-    nav.desktop-nav { display: flex; gap: 22px; align-items: center; }
-    nav.desktop-nav a {
-      color: var(--color-dark);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    nav.desktop-nav a:hover { color: var(--color-primary); }
-    .btn-primary {
-      background: var(--color-primary);
-      color: #FFFFFF;
-      border: none;
-      padding: 11px 20px;
-      border-radius: var(--radius);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
       align-items: center;
-      gap: 8px;
-    }
-    .btn-outline {
-      background: transparent;
-      color: var(--color-dark);
-      border: 1px solid var(--border-color);
-      padding: 11px 20px;
-      border-radius: var(--radius);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .hero-banner {
-      padding: 64px 24px 52px;
-      max-width: 1240px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .hero-pill {
-      display: inline-block;
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-color);
-      color: var(--color-primary);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 18px;
-    }
-    .hero-banner h1 {
-      font-family: var(--font-accent);
-      font-size: clamp(32px, 4.6vw, 56px);
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    .hero-banner p {
-      font-size: 16px;
-      color: #64748B;
-      max-width: 680px;
-      margin: 0 auto 26px;
-    }
-    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .section-wrap { max-width: 1240px; margin: 0 auto; padding: 42px 24px; }
-    .section-head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
       margin-bottom: 24px;
-      gap: 16px;
-      flex-wrap: wrap;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #E2E8F0;
     }
-    .bento-grid {
+    .geo-clock {
+      background: #EEF2FF;
+      color: #4F46E5;
+      font-family: var(--font-mono, monospace);
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* Attendance Heatmap Matrix */
+    .matrix-card {
+      background: #FFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+    .heat-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--grid-gap-desktop);
+      grid-template-columns: repeat(15, 1fr);
+      gap: 6px;
+      margin-top: 14px;
     }
-    .bento-card {
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .bento-card:hover { transform: translateY(-4px); border-color: var(--color-primary); }
-    .bento-img-wrap { height: 210px; position: relative; background: var(--bg-canvas); overflow: hidden; }
-    .bento-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .bento-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: var(--color-primary);
+    .heat-cell {
+      background: #10B981;
       color: #FFF;
+      font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 700;
-      padding: 4px 8px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 4px;
     }
-    .bento-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
-    .bento-code { font-size: 11px; color: #64748B; font-weight: 600; margin-bottom: 4px; }
-    .bento-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-    .bento-sub { font-size: 13px; color: #64748B; margin-bottom: 14px; flex: 1; }
-    .bento-footer {
-      display: flex;
-      justify-content: space-between;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-color);
+    .heat-leave { background: #F59E0B; }
+    .heat-off { background: #CBD5E1; color: #475569; }
+
+    /* Statutory Salary Slip */
+    .payslip-card {
+      background: #FFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 30px;
+      font-family: var(--font-mono);
       font-size: 13px;
-      font-weight: 700;
-      color: var(--color-primary);
     }
-    .calc-panel {
-      background: var(--bg-canvas);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 32px;
+    .slip-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 28px;
-      align-items: center;
-    }
-    .slider-group { margin-bottom: 18px; }
-    .slider-group label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .slider-group input[type="range"] { width: 100%; accent-color: var(--color-primary); }
-    .calc-result-card {
-      background: #FFFFFF;
-      border: 2px solid var(--color-primary);
-      border-radius: var(--radius);
-      padding: 24px;
-      text-align: center;
-    }
-    .calc-result-val {
-      font-family: var(--font-accent);
-      font-size: 38px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin: 8px 0 14px;
-    }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 900;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: #FFFFFF;
-      color: var(--color-dark);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      max-width: 480px;
-      width: 100%;
-      padding: 24px;
-    }
-    .form-field { margin-bottom: 12px; }
-    .form-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; color: #64748B; }
-    .form-field input {
-      width: 100%;
-      padding: 10px;
-      background: var(--bg-main);
-      color: var(--color-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-    }
-    .wa-float-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      background: #25D366;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 500;
-      text-decoration: none;
-      color: #FFF;
-      font-size: 22px;
-    }
-    .admin-pill-floating {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      background: var(--color-dark);
-      color: #FFF;
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      z-index: 500;
-    }
-    @media (max-width: 860px) {
-      .bento-grid, .calc-panel { grid-template-columns: 1fr; }
-      nav.desktop-nav, .admin-pill-floating { display: none; }
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 20px 0;
     }
   </style>
 </head>
-<body>
-  <div class="top-bar">STATUTORY COMPLIANT (EPF • ESIC • PT • NEW TAX REGIME TDS) // EMPLOYEE SELF-SERVICE + HR OPS</div>
-  <header>
-    <div class="nav-container">
-      <a href="#" class="brand-logo">PEOPLEPULSE HRMS</a>
-      <nav class="desktop-nav">
-        <a href="#catalog">Catalog / Modules</a>
-        <a href="#calculator">Interactive Calculator</a>
-        <a href="admin.html">Admin / POS Hub</a>
-      </nav>
-      <button class="btn-primary" onclick="openLeadModal()">Punch Shift Attendance / Apply Leave / View Payslip</button>
-    </div>
-  </header>
+<body data-layout-archetype="people-ops-attendance-payslip">
+  <div class="ops-header">
+    <div style="font-size:22px; font-weight:800; color:#4F46E5;" data-wl-brand>PULSE PEOPLE-OPS</div>
+    <div class="geo-clock">● GEO-FENCE SHIFT: 09:30 AM (KOCHI HQ VERIFIED)</div>
+    <a href="admin.html" style="color:#4F46E5; text-decoration:none; font-weight:700;">[ CRM & B2B PIPELINE ]</a>
+  </div>
 
-  <section class="hero-banner">
-    <span class="hero-pill">STATUTORY COMPLIANT (EPF • ESIC • PT • NEW TAX REGIME TDS) // EMPLOYEE SELF-SERVICE + HR OPS</span>
-    <h1 data-wl-brand>PEOPLEPULSE HRMS</h1>
-    <p data-wl-tagline>Employee self-service geo-attendance, leave workflows, expense claims & 1-click PF/ESI/TDS payroll.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="openLeadModal()">Punch Shift Attendance / Apply Leave / View Payslip</button>
-      <a href="#calculator" class="btn-outline">In-Hand Salary & PF/TDS Calculator</a>
-    </div>
-  </section>
-
-  <section class="section-wrap" id="catalog">
-    <div class="section-head">
-      <h2>Employee Self-Service Modules & Automated HR Workflows</h2>
-      <div id="drawerWaText" style="font-size:12px;color:#64748B;">WhatsApp: +91 90619 02295</div>
-    </div>
-    <div class="bento-grid" id="bentoGrid"></div>
-  </section>
-
-  <section class="section-wrap" id="calculator">
-    <div class="calc-panel">
-      <div>
-        <h2 style="font-family:var(--font-accent);font-size:26px;margin-bottom:6px;">Interactive CTC to Net In-Hand Salary & Statutory PF Calculator</h2>
-        <p style="font-size:13px;color:#64748B;margin-bottom:20px;">Calculate monthly net take-home pay after EPF, Professional Tax, and New Regime TDS.</p>
-        <div class="slider-group">
-          <label><span>Monthly Gross Salary (₹)</span><strong id="valSliderA" style="color:var(--color-primary);">65000</strong></label>
-          <input type="range" id="sliderA" min="18000" max="250000" value="65000" oninput="recalc()">
-        </div>
-        <div class="slider-group">
-          <label><span>Number of Paid Leave / LOP Deductions (Days)</span><strong id="valSliderB" style="color:var(--color-primary);">0</strong></label>
-          <input type="range" id="sliderB" min="0" max="10" value="0" oninput="recalc()">
-        </div>
-      </div>
-      <div class="calc-result-card">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#64748B;">Estimated Monthly Net In-Hand Bank Credit (After PF & PT)</div>
-        <div class="calc-result-val" id="calcOutput">₹0</div>
-        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="openLeadModal()">Submit Leave Request / Expense Claim / Download Payslip</button>
-      </div>
-    </div>
-  </section>
-
-  <div class="modal-overlay" id="leadModal">
-    <div class="modal-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <h3 style="font-size:18px;">Submit Leave Request / Expense Claim / Download Payslip</h3>
-        <button onclick="closeLeadModal()" style="background:none;border:none;color:inherit;font-size:18px;cursor:pointer;">✕</button>
-      </div>
-      <form onsubmit="submitLead(event)">
-        <div class="form-field"><label>Name / Business / Table *</label><input type="text" id="leadName" required placeholder="e.g. Anand Varma"></div>
-        <div class="form-field"><label>WhatsApp / Mobile Number *</label><input type="tel" id="leadPhone" required placeholder="919876543210"></div>
-        <div class="form-field"><label>Order / Ticket Details</label><input type="text" id="leadDetail" readonly></div>
-        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">Confirm & Sync to Admin / POS</button>
-      </form>
-      <div id="leadSuccessBox" style="display:none;margin-top:14px;padding:12px;background:var(--bg-canvas);border:1px solid var(--color-primary);border-radius:4px;font-size:12px;"></div>
+  <!-- Attendance Heatgrid -->
+  <div class="matrix-card">
+    <div style="font-weight:700; font-size:15px;">Monthly Attendance HeatGrid (Rahul M. • Engineering Lead)</div>
+    <div class="heat-grid">
+      <div class="heat-cell">01 P</div>
+      <div class="heat-cell">02 P</div>
+      <div class="heat-cell">03 P</div>
+      <div class="heat-cell">04 P</div>
+      <div class="heat-cell">05 P</div>
+      <div class="heat-cell heat-off">06 WO</div>
+      <div class="heat-cell heat-off">07 WO</div>
+      <div class="heat-cell">08 P</div>
+      <div class="heat-cell">09 P</div>
+      <div class="heat-cell heat-leave">10 CL</div>
+      <div class="heat-cell">11 P</div>
+      <div class="heat-cell">12 P</div>
+      <div class="heat-cell heat-off">13 WO</div>
+      <div class="heat-cell heat-off">14 WO</div>
+      <div class="heat-cell">15 P</div>
     </div>
   </div>
 
-  <a href="admin.html" class="admin-pill-floating">⚙️ Open Admin / POS Command Center</a>
-  <a id="floatingWaBtn" href="https://wa.me/919061902295" target="_blank" class="wa-float-btn">💬</a>
+  <!-- Statutory Salary Slip -->
+  <div class="payslip-card">
+    <div style="display:flex; justify-content:space-between; border-bottom:1px solid #000; padding-bottom:10px;">
+      <div><strong>SALARY SLIP — OCTOBER 2026</strong></div>
+      <div>PAN: ABCDE1234F • UAN: 1009849182</div>
+    </div>
 
-  <script>
-    const ITEMS = [
-  {
-    "code": "HR-MOD-ATT",
-    "title": "Geo-Fenced Mobile Shift Punch-In & Biometric Sync",
-    "sub": "Verifies GPS radius (Kochi HQ / Remote WFH) with automatic overtime & late-mark rules",
-    "metric": "98.4% Today Present",
-    "badge": "ATTENDANCE",
-    "img": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "code": "HR-MOD-PAY",
-    "title": "1-Click Monthly Payroll Run & Bank NEFT Advice",
-    "sub": "Auto-computes Basic, HRA, LTA, EPF (12%), ESIC, Professional Tax & TDS",
-    "metric": "Zero Spreadsheet Errors",
-    "badge": "PAYROLL ENGINE",
-    "img": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "code": "HR-MOD-SLIP",
-    "title": "Instant PDF Salary Slip & Form-16 Tax Portal",
-    "sub": "Employees download digitally signed monthly payslips on web or WhatsApp",
-    "metric": "Self-Service 24/7",
-    "badge": "PAYSLIPS",
-    "img": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "code": "HR-MOD-LVE",
-    "title": "Multi-Level Leave Balance & Manager Approval Matrix",
-    "sub": "Casual, Sick, Earned & Maternity leave accruals with team calendar collision check",
-    "metric": "1-Tap Approval",
-    "badge": "LEAVE MANAGEMENT",
-    "img": "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "code": "HR-MOD-EXP",
-    "title": "Travel & Client Expense Reimbursement OCR",
-    "sub": "Upload flight/hotel GST bills -> Manager approval -> Auto-credited in payroll",
-    "metric": "72-Hr Settlement",
-    "badge": "EXPENSE CLAIMS",
-    "img": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    "code": "HR-MOD-ONB",
-    "title": "Digital Offer Letter, Aadhaar eSign & Asset Handover",
-    "sub": "Tracks MacBook/ID card issuance, NDA signing & 90-day probation KPIs",
-    "metric": "Paperless Onboarding",
-    "badge": "TALENT OPS",
-    "img": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
-  }
-];
-    let selectedTitle = ITEMS[0].title;
-    let calcFormatted = '';
+    <div class="slip-grid">
+      <div>
+        <div style="font-weight:700; color:#10B981; margin-bottom:8px;">EARNINGS (INR)</div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• Basic Salary:</span><span>₹60,000</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• House Rent (HRA):</span><span>₹30,000</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• Special Allowance:</span><span>₹30,000</span></div>
+        <div style="border-top:1px solid #CCC; margin-top:8px; padding-top:4px; font-weight:700; display:flex; justify-content:space-between;">
+          <span>GROSS EARNINGS:</span><span>₹1,20,000</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700; color:#EF4444; margin-bottom:8px;">DEDUCTIONS (INR)</div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• Provident Fund (EPF 12%):</span><span>₹7,200</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• Professional Tax (PT):</span><span>₹200</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>• Income Tax (TDS):</span><span>₹12,400</span></div>
+        <div style="border-top:1px solid #CCC; margin-top:8px; padding-top:4px; font-weight:700; display:flex; justify-content:space-between;">
+          <span>TOTAL DEDUCTIONS:</span><span>₹19,800</span>
+        </div>
+      </div>
+    </div>
 
-    function renderGrid() {
-      document.getElementById('bentoGrid').innerHTML = ITEMS.map((it, i) => `
-        <article class="bento-card" onclick="selectItem(${i})">
-          <div class="bento-img-wrap">
-            <img src="${it.img}" alt="${it.title}" loading="lazy">
-            <span class="bento-badge">${it.badge}</span>
-          </div>
-          <div class="bento-body">
-            <div class="bento-code">${it.code}</div>
-            <div class="bento-title">${it.title}</div>
-            <div class="bento-sub">${it.sub}</div>
-            <div class="bento-footer"><span>${it.metric}</span><span>Select →</span></div>
-          </div>
-        </article>
-      `).join('');
-    }
-
-    function recalc() {
-      const team = Number(document.getElementById('sliderA').value);
-      const hours = Number(document.getElementById('sliderB').value);
-      document.getElementById('valSliderA').textContent = team;
-      document.getElementById('valSliderB').textContent = hours;
-      const val = Math.round((team - (team / 30) * hours) * 0.88 - 200);
-      calcFormatted = '₹' + Number(val).toLocaleString('en-IN');
-      document.getElementById('calcOutput').textContent = calcFormatted;
-    }
-
-    function selectItem(idx) {
-      selectedTitle = ITEMS[idx].title + ' (' + ITEMS[idx].metric + ')';
-      openLeadModal();
-    }
-
-    function openLeadModal() {
-      document.getElementById('leadDetail').value = selectedTitle + ' • Total: ' + calcFormatted;
-      document.getElementById('leadSuccessBox').style.display = 'none';
-      document.getElementById('leadModal').classList.add('open');
-    }
-
-    function closeLeadModal() {
-      document.getElementById('leadModal').classList.remove('open');
-    }
-
-    function submitLead(e) {
-      e.preventDefault();
-      const entry = {
-        id: 'TX-' + Math.floor(1000 + Math.random() * 9000),
-        name: document.getElementById('leadName').value.trim(),
-        phone: document.getElementById('leadPhone').value.trim(),
-        detail: document.getElementById('leadDetail').value.trim(),
-        amount: calcFormatted,
-        status: 'LIVE // QUEUED'
-      };
-      try {
-        const list = JSON.parse(localStorage.getItem('bmad_leads_tpl-lerp-hrms-payroll') || '[]');
-        list.unshift(entry);
-        localStorage.setItem('bmad_leads_tpl-lerp-hrms-payroll', JSON.stringify(list));
-      } catch (err) {}
-      const box = document.getElementById('leadSuccessBox');
-      box.style.display = 'block';
-      box.innerHTML = '✓ Dispatched (' + entry.id + ')! Open <a href="admin.html" style="color:var(--color-primary);font-weight:700;">Admin / POS Hub</a> to process.';
-    }
-
-    renderGrid();
-    recalc();
-  </script>
+    <div style="background:#F0FDF4; border:1px solid #86EFAC; padding:16px; border-radius:6px; display:flex; justify-content:space-between; font-weight:800; font-size:16px; color:#15803D;">
+      <span>NET BANK DISBURSEMENT (NEFT):</span>
+      <span>₹1,00,200.00</span>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,17 +1,31 @@
-/* Extracted via tpl-tools-design-extractor for tpl-lerp-hrms-payroll */
+/* ==========================================================================
+   BMAD Normalized Design Tokens & Movement Blueprint (theme-tokens.css)
+   Movement  : [R] People-Ops Attendance HeatGrid & Payslip Workspace
+   Archetype : Unified CRM Pipeline, Geo-Fenced Attendance Matrix & Statutory Payroll Suite (Attio / Frappe HR / Rippling)
+   Reference : https://attio.com
+   Contract  : whitelabel-and-showroom-contract.md §2 + design-movements-and-layout-blueprints.md
+   ========================================================================== */
+
 :root {
-  --font-primary: 'Inter', sans-serif;
-  --font-accent: 'Space Grotesk', sans-serif;
-  --color-primary: #7C3AED;
+  --font-primary: 'Plus Jakarta Sans', sans-serif;
+  --font-accent: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --color-primary: #4F46E5;
   --brand-primary: var(--color-primary);
-  --color-dark: #1E1B4B;
+
+  --color-dark: #111827;
   --brand-dark: var(--color-dark);
+
   --bg-main: #F8FAFC;
-  --bg-canvas: #F5F3FF;
+  --bg-canvas: #FFFFFF;
   --bg-sand: var(--bg-canvas);
-  --border-color: #DDD6FE;
-  --grid-gap-desktop: 28px 22px;
-  --grid-gap-mobile: 16px 14px;
+
+  --border-color: #E2E8F0;
+  --border-structural: 1px solid #E2E8F0;
+  --shadow-token: 0 2px 6px rgba(15, 23, 42, 0.05);
+  --grid-gap-desktop: 14px;
+  --grid-gap-mobile: 10px;
   --radius: 6px;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }

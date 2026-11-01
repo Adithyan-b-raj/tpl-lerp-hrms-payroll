@@ -2,133 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PEOPLEPULSE HRMS — Admin & POS Command Center</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <title data-wl-brand>PULSE // B2B CRM Pipeline</title>
   <link rel="stylesheet" href="theme-tokens.css">
   <script src="whitelabel.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-primary); background: #F4F5F7; color: #0F172A; display: flex; min-height: 100vh; }
-    aside.admin-sidebar {
-      width: 250px;
-      background: var(--brand-dark);
-      color: #FFF;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .sidebar-brand-title { font-family: var(--font-accent); font-size: 19px; font-weight: 700; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.12); }
-    .sidebar-brand-title span { color: var(--brand-primary); }
-    .nav-item { padding: 10px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: #CBD5E1; }
-    .nav-item.active, .nav-item:hover { background: var(--brand-primary); color: #FFF; }
-    main { flex: 1; padding: 26px; overflow-y: auto; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
-    .kpi-card { background: #FFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; }
-    .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748B; }
-    .kpi-val { font-size: 22px; font-weight: 700; margin: 6px 0 4px; }
-    .kpi-delta { font-size: 11px; font-weight: 600; color: var(--brand-primary); }
-    .card-box { background: #FFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { text-align: left; padding: 11px 10px; border-bottom: 1px solid #E2E8F0; }
-    th { font-size: 11px; text-transform: uppercase; color: #64748B; }
-    .status-pill { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; background: #FEF3EE; color: var(--brand-primary); }
-    .btn-sm { background: var(--brand-primary); color: #FFF; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; }
-    @media (max-width: 860px) { body { flex-direction: column; } aside.admin-sidebar { width: 100%; } .kpi-grid { grid-template-columns: 1fr 1fr; } }
+    body { background: #111827; color: #FFF; font-family: monospace; padding: 24px; }
   </style>
 </head>
-<body>
-  <aside class="admin-sidebar">
-    <div class="sidebar-brand-title">PEOPLEPULSE HRMS <span>Hub</span></div>
-    <div class="nav-item active">⚡ Live POS / Operations</div>
-    <div class="nav-item" onclick="window.location.href='index.html'">👁️ Customer Portal</div>
-    <div style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);font-size:11px;color:#94A3B8;">
-      Support / Alert WhatsApp:
-      <input type="text" id="adminWaInput" data-wl-wa value="919061902295" style="width:100%;margin-top:6px;padding:6px;border-radius:4px;border:none;">
-    </div>
-  </aside>
-  <main>
-    <div class="top-bar">
-      <div>
-        <div class="mobile-brand" style="font-size:12px;font-weight:700;color:var(--brand-primary);text-transform:uppercase;">PEOPLEPULSE HRMS</div>
-        <h1 style="font-size:21px;">HR Director Command Center — Attendance Roster, Leave Approvals & Payroll Run</h1>
-      </div>
-      <a href="index.html" class="btn-sm">← Customer View</a>
-    </div>
-    <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Total Active Headcount</div><div class="kpi-val">128 Employees</div><div class="kpi-delta">121 Present • 7 on Leave</div></div><div class="kpi-card"><div class="kpi-label">Monthly Payroll Outflow</div><div class="kpi-val">₹74.6 Lakhs</div><div class="kpi-delta">NEFT Batch Ready</div></div><div class="kpi-card"><div class="kpi-label">Pending Leave / Expenses</div><div class="kpi-val">5 Requests</div><div class="kpi-delta">SLA: <4 Hours</div></div><div class="kpi-card"><div class="kpi-label">EPF & ESIC ECR Filing</div><div class="kpi-val">100% Compliant</div><div class="kpi-delta">Challan Generated</div></div>
-    </div>
-    <div class="card-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <h2 style="font-size:16px;">Live Operations Queue, Counter POS & Ledger</h2>
-        <button class="btn-sm" onclick="newPosEntry()">+ New Counter / POS Entry</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead><tr><th>ID</th><th>Party / Account</th><th>Line Items & Particulars</th><th>Amount</th><th>Status</th><th>WhatsApp</th></tr></thead>
-          <tbody id="leadsTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-  <script>
-    const SEED = [
-  {
-    "id": "EMP-1042",
-    "name": "Karthik Warrier (Senior Full-Stack Engineer)",
-    "phone": "919847011223",
-    "detail": "Shift: 09:30 AM Geo-Verified (Kochi HQ) • Oct Net Pay: ₹84,200",
-    "status": "PAYSLIP ISSUED ✅",
-    "amount": "₹84,200"
-  },
-  {
-    "id": "LVE-409",
-    "name": "Sneha Nambiar (Product Marketing Lead)",
-    "phone": "919447022334",
-    "detail": "Earned Leave Request: Nov 18–20 (3 Days — Family Wedding) • Balance: 14d",
-    "status": "PENDING APPROVAL",
-    "amount": "3 Days Paid"
-  },
-  {
-    "id": "EXP-812",
-    "name": "Rohit Shenoy (Enterprise Sales VP)",
-    "phone": "919895033445",
-    "detail": "Bangalore Client Visit Flight + Taj Stay (GST Invoice Attached)",
-    "status": "APPROVED // PAYROLL",
-    "amount": "₹16,450"
-  }
-];
-    function render() {
-      let local = [];
-      try { local = JSON.parse(localStorage.getItem('bmad_leads_tpl-lerp-hrms-payroll') || '[]'); } catch (e) {}
-      const rows = [...local, ...SEED];
-      document.getElementById('leadsTableBody').innerHTML = rows.map(row => `
-        <tr>
-          <td><strong>${row.id}</strong></td>
-          <td>${row.name}<br><span style="font-size:11px;color:#64748B;">+${row.phone}</span></td>
-          <td>${row.detail}</td>
-          <td><strong>${row.amount}</strong></td>
-          <td><span class="status-pill">${row.status}</span></td>
-          <td><a class="btn-sm" target="_blank" href="https://wa.me/${String(row.phone).replace(/[^0-9]/g,'')}?text=${encodeURIComponent('Update from ' + document.title + ': ' + row.id + ' — ' + row.detail)}">💬 Alert</a></td>
-        </tr>
-      `).join('');
-    }
-    function newPosEntry() {
-      const name = prompt('Customer / Vendor / Employee Name:');
-      if (!name) return;
-      const detail = prompt('Items / Notes:', 'Geo-Fenced Mobile Shift Punch-In & Biometric Sync');
-      const amount = prompt('Amount (₹):', '₹1,450');
-      const local = JSON.parse(localStorage.getItem('bmad_leads_tpl-lerp-hrms-payroll') || '[]');
-      local.unshift({ id: 'POS-' + Math.floor(1000 + Math.random()*9000), name, phone: document.getElementById('adminWaInput').value || '919061902295', detail, amount, status: 'CONFIRMED' });
-      localStorage.setItem('bmad_leads_tpl-lerp-hrms-payroll', JSON.stringify(local));
-      render();
-    }
-    render();
-  </script>
+<body data-layout-archetype="people-ops-crm-admin">
+  <h2><span data-wl-brand>PULSE</span> — B2B Sales Deals & Forecast Pipeline</h2>
+  <div style="background:#1F2937; padding:18px; margin-top:20px;">
+    <div>DEAL: GLOBAL LOGISTICS CORP (350 Seats)</div>
+    <div style="color:#4F46E5; margin-top:4px;">● CONTRACT VALUE: $42,000/YR · SIGNED STAGE</div>
+  </div>
 </body>
 </html>
