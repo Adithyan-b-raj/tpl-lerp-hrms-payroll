@@ -1,10 +1,15 @@
 /**
  * BMAD White-Label URL Personalizer Engine (whitelabel.js)
+ * Enterprise HRMS, Geo-Attendance, Leave & Payroll Suite
+ *
  * Supports: ?brand=&tagline=&primary=&dark=&bg=&wa=&logo=&reset_wl=1
  * Persists across Customer (/) and Admin (/admin.html) views via sessionStorage + link propagation.
  */
 (function () {
   var STORAGE_KEY = 'bmad_wl_config_v1';
+  var DEFAULT_BRAND = 'Pulse HRMS';
+  var DEFAULT_PRIMARY = '#4f46e5';
+  var DEFAULT_WA = '919847011001';
 
   function sanitizeHex(val) {
     if (!val) return '';
@@ -74,7 +79,7 @@
     while (el.firstChild) el.removeChild(el.firstChild);
     var parts = brandText.split(/\s+/);
     var mainPart = parts[0] || brandText;
-    var subPart = parts.length > 1 ? parts.slice(1).join(' ') : (fallbackSub || 'Boutique');
+    var subPart = parts.length > 1 ? parts.slice(1).join(' ') : (fallbackSub || 'HRMS');
     el.appendChild(document.createTextNode(mainPart + ' '));
     var span = document.createElement('span');
     span.textContent = subPart;
@@ -85,33 +90,36 @@
     var cfg = window.__WL_CONFIG || {};
     applyCssVariables(cfg);
 
+    var activeBrand = cfg.brand || DEFAULT_BRAND;
+
+    // Apply Logo / Brand element overrides
     if (cfg.brand || (cfg.logo && /^https?:\/\//i.test(cfg.logo))) {
       document.querySelectorAll('.brand-logo').forEach(function (el) {
         if (cfg.logo && /^https?:\/\//i.test(cfg.logo)) {
           while (el.firstChild) el.removeChild(el.firstChild);
           var img = document.createElement('img');
           img.src = cfg.logo;
-          img.alt = cfg.brand || 'Brand Logo';
-          img.style.maxHeight = '38px';
+          img.alt = activeBrand;
+          img.style.maxHeight = '32px';
           img.style.width = 'auto';
           img.style.display = 'block';
           el.appendChild(img);
-        } else if (cfg.brand) {
-          renderSplitBrand(el, cfg.brand, 'Boutique');
+        } else {
+          renderSplitBrand(el, activeBrand, 'People-Ops');
         }
       });
     }
 
     if (cfg.brand) {
       var isAdmin = window.location.pathname.indexOf('admin') !== -1;
-      document.title = cfg.brand + (isAdmin ? ' — Command Center & POS' : ' — Official Boutique Store');
+      document.title = cfg.brand + (isAdmin ? ' — People-Ops & Payroll Console' : ' — Employee Self-Service & Attendance');
 
       document.querySelectorAll('.sidebar-brand-title').forEach(function (el) {
-        renderSplitBrand(el, cfg.brand, 'Hub');
+        renderSplitBrand(el, cfg.brand, 'Ops');
       });
 
       document.querySelectorAll('.mobile-brand').forEach(function (el) {
-        renderSplitBrand(el, cfg.brand, 'Hub');
+        renderSplitBrand(el, cfg.brand, 'Ops');
       });
 
       document.querySelectorAll('[data-wl-brand]').forEach(function (el) {
@@ -120,35 +128,35 @@
     }
 
     if (cfg.tagline) {
-      document.querySelectorAll('[data-wl-tagline], .hero-banner p').forEach(function (el) {
+      document.querySelectorAll('[data-wl-tagline]').forEach(function (el) {
         el.textContent = cfg.tagline;
       });
     }
 
-    if (cfg.wa || cfg.brand) {
-      var waBtn = document.getElementById('floatingWaBtn');
-      var activeBrand = cfg.brand || 'Kaka by Eliza';
-      var activeWa = cfg.wa;
-      if (!activeWa && waBtn && waBtn.href) {
-        var m = waBtn.href.match(/wa\.me\/([0-9]+)/);
-        if (m) activeWa = m[1];
-      }
-      if (activeWa) {
-        if (waBtn) {
-          waBtn.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('Hello ' + activeBrand + ', I have an inquiry regarding your collection');
-        }
-        var drawerWa = document.getElementById('drawerWaText');
-        if (drawerWa) {
-          var formatted = activeWa.length === 12
-            ? '+' + activeWa.slice(0, 2) + ' ' + activeWa.slice(2, 7) + ' ' + activeWa.slice(7)
-            : '+' + activeWa;
-          drawerWa.textContent = 'WhatsApp: ' + formatted;
-        }
-        document.querySelectorAll('#adminWaInput, input[data-wl-wa]').forEach(function (inp) {
-          inp.value = activeWa;
-        });
-      }
+    // WhatsApp Integration
+    var activeWa = cfg.wa || DEFAULT_WA;
+    var waBtn = document.getElementById('floatingWaBtn');
+    if (waBtn) {
+      waBtn.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('Hello HR Desk at ' + activeBrand + ', I have an inquiry regarding attendance or payslips.');
     }
+    var drawerWa = document.getElementById('drawerWaText');
+    if (drawerWa) {
+      var formatted = activeWa.length === 12
+        ? '+' + activeWa.slice(0, 2) + ' ' + activeWa.slice(2, 7) + ' ' + activeWa.slice(7)
+        : '+' + activeWa;
+      drawerWa.textContent = 'HR Desk WhatsApp: ' + formatted;
+    }
+    document.querySelectorAll('#adminWaInput, input[data-wl-wa]').forEach(function (inp) {
+      inp.value = activeWa;
+    });
+
+    // Color pickers sync
+    document.querySelectorAll('#adminPrimaryInput').forEach(function (inp) {
+      if (cfg.primary) inp.value = cfg.primary;
+    });
+    document.querySelectorAll('#adminBrandInput').forEach(function (inp) {
+      if (cfg.brand) inp.value = cfg.brand;
+    });
 
     // Propagate query params across internal links (index.html <-> admin.html)
     var qs = new URLSearchParams();
@@ -175,5 +183,5 @@
     applyDomOverrides();
   }
   window.addEventListener('load', applyDomOverrides);
-  setTimeout(applyDomOverrides, 600);
+  setTimeout(applyDomOverrides, 500);
 })();

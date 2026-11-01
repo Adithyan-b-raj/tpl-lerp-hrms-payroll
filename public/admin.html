@@ -2,18 +2,1117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title data-wl-brand>PULSE // B2B CRM Pipeline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-wl-brand>Pulse HRMS // People-Ops & Payroll Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="theme-tokens.css">
   <script src="whitelabel.js"></script>
   <style>
-    body { background: #111827; color: #FFF; font-family: monospace; padding: 24px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-main, #f8fafc);
+      color: var(--color-dark, #0f172a);
+      font-family: var(--font-primary, 'Inter', sans-serif);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono { font-family: var(--font-mono, monospace); }
+
+    /* Admin Top Navigation */
+    .admin-nav {
+      background: #0f172a;
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid #1e293b;
+    }
+    .admin-nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--color-primary, #4f46e5);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .brand-meta h1 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .brand-meta span {
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-tab-btn {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-tab-btn:hover {
+      color: #ffffff;
+      background: #1e293b;
+    }
+    .nav-tab-btn.active {
+      background: var(--color-primary, #4f46e5);
+      color: #ffffff;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-client-view {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1px solid #334155;
+    }
+    .btn-client-view:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    /* Admin Workspace */
+    .admin-layout {
+      max-width: 1400px;
+      margin: 24px auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* Top KPI Ribbon */
+    .kpi-ribbon {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 1024px) {
+      .kpi-ribbon { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .kpi-ribbon { grid-template-columns: 1fr; }
+    }
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 600;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-sub.amber { color: #f59e0b; }
+
+    /* Admin Panels */
+    .panel-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.03);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .panel-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .panel-body {
+      padding: 22px;
+    }
+
+    /* 30-Day Attendance Heatmap Matrix */
+    .matrix-table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      background: #ffffff;
+    }
+    .matrix-table th {
+      background: #f8fafc;
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      border-bottom: 2px solid #e2e8f0;
+      border-right: 1px solid #f1f5f9;
+      white-space: nowrap;
+    }
+    .matrix-table th.emp-col {
+      text-align: left;
+      padding: 8px 14px;
+      position: sticky;
+      left: 0;
+      background: #f8fafc;
+      z-index: 10;
+      border-right: 2px solid #e2e8f0;
+      width: 220px;
+      min-width: 200px;
+    }
+    .matrix-table td {
+      padding: 4px;
+      text-align: center;
+      border-bottom: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
+    }
+    .matrix-table td.emp-name-cell {
+      position: sticky;
+      left: 0;
+      background: #ffffff;
+      z-index: 5;
+      text-align: left;
+      padding: 8px 14px;
+      font-weight: 600;
+      border-right: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    /* HeatMap Cell */
+    .heat-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 26px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .heat-pill:hover {
+      transform: scale(1.15);
+      z-index: 20;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .heat-p { background: #10b981; color: #ffffff; } /* Present */
+    .heat-l { background: #f59e0b; color: #ffffff; } /* Late */
+    .heat-w { background: #3b82f6; color: #ffffff; } /* WFH */
+    .heat-lv { background: #8b5cf6; color: #ffffff; } /* Leave */
+    .heat-a { background: #f43f5e; color: #ffffff; } /* Absent */
+    .heat-wo { background: #e2e8f0; color: #94a3b8; } /* Weekend Off */
+
+    .heat-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #64748b;
+    }
+    .legend-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    /* 1-Click Monthly Payroll Engine */
+    .batch-summary-strip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 980px) {
+      .batch-summary-strip { grid-template-columns: repeat(3, 1fr); }
+    }
+    .summary-cell span {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .summary-cell strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+
+    .btn-run-payroll {
+      background: var(--color-primary, #4f46e5);
+      color: #ffffff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+    }
+    .btn-run-payroll:hover {
+      background: var(--color-primary-dark, #4338ca);
+      transform: translateY(-1px);
+    }
+    .btn-neft-export {
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-neft-export:hover {
+      background: #1e293b;
+    }
+
+    /* Tables */
+    .data-table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .data-table th {
+      background: #f8fafc;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #0f172a;
+    }
+    .data-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* Leave Actions */
+    .btn-action-approve {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action-approve:hover {
+      background: #10b981;
+      color: #fff;
+    }
+    .btn-action-reject {
+      background: #fff1f2;
+      color: #9f1239;
+      border: 1px solid #fecdd3;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action-reject:hover {
+      background: #f43f5e;
+      color: #fff;
+    }
+
+    /* Whitelabel Customizer Bar */
+    .wl-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .wl-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 14px;
+      align-items: flex-end;
+    }
+    @media (max-width: 980px) {
+      .wl-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .wl-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .wl-field input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    /* Cell Detail Tooltip / Modal */
+    .cell-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(2px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .cell-modal-overlay.active {
+      display: flex;
+    }
+    .cell-modal-card {
+      background: #ffffff;
+      border-radius: 10px;
+      max-width: 420px;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.2);
+    }
   </style>
 </head>
-<body data-layout-archetype="people-ops-crm-admin">
-  <h2><span data-wl-brand>PULSE</span> — B2B Sales Deals & Forecast Pipeline</h2>
-  <div style="background:#1F2937; padding:18px; margin-top:20px;">
-    <div>DEAL: GLOBAL LOGISTICS CORP (350 Seats)</div>
-    <div style="color:#4F46E5; margin-top:4px;">● CONTRACT VALUE: $42,000/YR · SIGNED STAGE</div>
+<body data-layout-archetype="people-ops-admin">
+
+  <!-- Admin Top Navigation -->
+  <header class="admin-nav">
+    <div class="admin-nav-inner">
+      <div class="brand-group">
+        <div class="brand-icon">P</div>
+        <div class="brand-meta">
+          <h1 data-wl-brand>Pulse HRMS</h1>
+          <span>People-Ops & Statutory Payroll Console</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab-btn active" onclick="switchSection('attendanceSection', this)">Attendance HeatGrid</button>
+        <button class="nav-tab-btn" onclick="switchSection('payrollSection', this)">Statutory Payroll</button>
+        <button class="nav-tab-btn" onclick="switchSection('leaveSection', this)">Leave Approvals</button>
+        <button class="nav-tab-btn" onclick="switchSection('whitelabelSection', this)">Brand Personalizer</button>
+      </nav>
+
+      <div class="nav-right-actions">
+        <a href="index.html" class="btn-client-view">
+          <span>← Employee Self-Service</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Main Layout -->
+  <main class="admin-layout">
+
+    <!-- Top KPI Ribbon -->
+    <section class="kpi-ribbon">
+      <div class="kpi-card">
+        <div class="kpi-title">Active Workforce</div>
+        <div id="kpiEmployees" class="kpi-value mono">9</div>
+        <div class="kpi-sub">● All Departments Deployed</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Today's Attendance Rate</div>
+        <div id="kpiAttendanceRate" class="kpi-value mono">92.4%</div>
+        <div class="kpi-sub">● HQ Geofence Verified</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">On Approved Leave Today</div>
+        <div id="kpiOnLeave" class="kpi-value mono">1</div>
+        <div class="kpi-sub amber">● Casual Leave Approved</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Monthly Payroll Liability</div>
+        <div id="kpiPayrollGross" class="kpi-value mono">₹8,90,500</div>
+        <div class="kpi-sub">● Net: ₹8,02,984 (Disbursed)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Pending Leave Requests</div>
+        <div id="kpiPendingLeaves" class="kpi-value mono">2</div>
+        <div class="kpi-sub amber">● Action Required Desk</div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: 30-Day Employee Attendance Heatmap Matrix -->
+    <section id="attendanceSection" class="panel-card">
+      <div class="panel-header">
+        <div class="panel-title-wrap">
+          <span style="font-size: 18px;">📊</span>
+          <div>
+            <div class="panel-title">30-Day Employee Attendance HeatGrid (October 2026)</div>
+            <div style="font-size: 11px; color: #64748b;">Kochi Tech Park HQ Geofenced [9.9312° N, 76.2673° E] • 500m Radar Verification</div>
+          </div>
+        </div>
+        <div class="panel-actions">
+          <select id="matrixMonthFilter" class="form-control" style="font-size: 12px; padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            <option value="2026-10" selected>October 2026</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel-body" style="padding-top: 10px;">
+        <div class="matrix-table-wrap">
+          <table class="matrix-table">
+            <thead>
+              <tr id="matrixHeaderRow">
+                <th class="emp-col">Employee Profile</th>
+                <!-- Days 01 to 30 will be generated -->
+              </tr>
+            </thead>
+            <tbody id="matrixTableBody">
+              <!-- Dynamically populated rows for all 9 employees -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Heatmap Legend -->
+        <div class="heat-legend">
+          <div class="legend-item">
+            <div class="legend-box heat-p"></div>
+            <span><strong>P:</strong> Present (On-Time / HQ Geofence)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box heat-l"></div>
+            <span><strong>L:</strong> Late Punch (> 15m)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box heat-w"></div>
+            <span><strong>W:</strong> Approved Remote / WFH</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box heat-lv"></div>
+            <span><strong>LV:</strong> Approved Statutory Leave</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box heat-a"></div>
+            <span><strong>A:</strong> Unexcused Absence</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box heat-wo"></div>
+            <span><strong>WO:</strong> Weekend Off</span>
+          </div>
+          <div style="margin-left: auto; font-size: 11px; color: #64748b;">
+            💡 <em>Click any punch cell to inspect timestamp & GPS telemetry</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: 1-Click Monthly Statutory Payroll Run Engine -->
+    <section id="payrollSection" class="panel-card">
+      <div class="panel-header">
+        <div class="panel-title-wrap">
+          <span style="font-size: 18px;">💰</span>
+          <div>
+            <div class="panel-title">1-Click Monthly Indian Statutory Payroll Engine</div>
+            <div style="font-size: 11px; color: #64748b;">EPF (12%), ESIC (0.75% / 3.25% under ₹21k), Kerala PT (₹208), New Tax Regime TDS</div>
+          </div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-neft-export" onclick="downloadNeftCsv()">
+            <span>📥 Download NEFT Bank Batch CSV</span>
+          </button>
+          <button class="btn-run-payroll" onclick="executePayrollRun()">
+            <span>⚡ Execute October 2026 Payroll</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <!-- Batch Rollup Strip -->
+        <div class="batch-summary-strip">
+          <div class="summary-cell">
+            <span>Total Gross Earnings</span>
+            <strong id="summaryGross" class="mono">₹8,90,500.00</strong>
+          </div>
+          <div class="summary-cell">
+            <span>Statutory EPF (12% Matching)</span>
+            <strong id="summaryEpf" class="mono">₹1,08,480.00</strong>
+          </div>
+          <div class="summary-cell">
+            <span>ESIC (Employee + Employer)</span>
+            <strong id="summaryEsic" class="mono">₹820.00</strong>
+          </div>
+          <div class="summary-cell">
+            <span>Professional Tax (Kerala)</span>
+            <strong id="summaryPt" class="mono">₹1,872.00</strong>
+          </div>
+          <div class="summary-cell">
+            <span>Estimated TDS Deduction</span>
+            <strong id="summaryTds" class="mono">₹31,250.00</strong>
+          </div>
+          <div class="summary-cell" style="background:#f0fdf4; border-radius:6px; padding:6px 10px;">
+            <span style="color:#166534;">Net Bank Transfer</span>
+            <strong id="summaryNet" class="mono" style="color:#15803d;">₹8,02,984.25</strong>
+          </div>
+        </div>
+
+        <!-- Payroll Rollup Table -->
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Emp Code</th>
+                <th>Employee Name</th>
+                <th>Basic</th>
+                <th>HRA</th>
+                <th>Special</th>
+                <th>Gross</th>
+                <th>EPF (12%)</th>
+                <th>ESIC (0.75%)</th>
+                <th>PT</th>
+                <th>TDS</th>
+                <th>Net Bank Transfer</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="payrollTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Leave Approvals Desk -->
+    <section id="leaveSection" class="panel-card">
+      <div class="panel-header">
+        <div class="panel-title-wrap">
+          <span style="font-size: 18px;">📝</span>
+          <div>
+            <div class="panel-title">Statutory Leave Approvals Desk</div>
+            <div style="font-size: 11px; color: #64748b;">Review employee time-off requests, balances, and impact on monthly payroll</div>
+          </div>
+        </div>
+        <span id="pendingLeaveBadge" class="badge badge-late">2 Pending Requests</span>
+      </div>
+
+      <div class="panel-body">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Request Code</th>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>Dates</th>
+                <th>Days</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leaveRequestsBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: White-Label Personalizer -->
+    <section id="whitelabelSection" class="wl-panel">
+      <div style="margin-bottom: 16px;">
+        <h3 style="font-size: 15px; font-weight: 800; color: #0f172a;">White-Label Customizer & Showroom Contract</h3>
+        <p style="font-size: 11px; color: #64748b;">Instantly personalize Pulse HRMS for prospect demonstrations via URL parameters and CSS custom properties.</p>
+      </div>
+
+      <div class="wl-grid">
+        <div class="wl-field">
+          <label for="adminBrandInput">Enterprise Brand Name</label>
+          <input type="text" id="adminBrandInput" placeholder="Pulse HRMS" value="Pulse HRMS">
+        </div>
+        <div class="wl-field">
+          <label for="adminTaglineInput">Brand Tagline</label>
+          <input type="text" id="adminTaglineInput" placeholder="People-Ops & Statutory Payroll" value="People-Ops & Statutory Payroll">
+        </div>
+        <div class="wl-field">
+          <label for="adminPrimaryInput">Primary Accent Color (Hex)</label>
+          <input type="text" id="adminPrimaryInput" placeholder="#4f46e5" value="#4f46e5">
+        </div>
+        <div class="wl-field">
+          <label for="adminWaInput">WhatsApp HR Support Number</label>
+          <input type="text" id="adminWaInput" placeholder="919847011001" value="919847011001">
+        </div>
+        <div>
+          <button onclick="saveWhitelabelSettings()" style="background:var(--color-primary, #4f46e5); color:#fff; border:none; padding:9px 18px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+            Apply Theme
+          </button>
+          <button onclick="resetWhitelabelSettings()" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:9px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; margin-left:6px;">
+            Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Cell Detail Modal (Punch Inspection) -->
+  <div id="cellModal" class="cell-modal-overlay">
+    <div class="cell-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h4 id="modalEmpName" style="font-size: 14px; font-weight: 800; color: #0f172a;">Punch Telemetry Inspector</h4>
+        <button onclick="closeCellModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:#94a3b8;">✕</button>
+      </div>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:#64748b;">Date:</span>
+          <strong id="modalDate" class="mono">2026-10-06</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:#64748b;">Status:</span>
+          <strong id="modalStatus" class="mono">PRESENT</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:#64748b;">Clock In:</span>
+          <strong id="modalIn" class="mono">09:12:15</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="color:#64748b;">Clock Out:</span>
+          <strong id="modalOut" class="mono">18:18:30</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#64748b;">Duration Logged:</span>
+          <strong id="modalHours" class="mono">9.10 hrs</strong>
+        </div>
+      </div>
+      <div style="font-size: 11px; color: #475569;">
+        <div><strong>GPS Coordinates:</strong> <span id="modalCoords" class="mono">9.9312° N, 76.2673° E</span></div>
+        <div style="margin-top:2px;"><strong>Geofence Verification:</strong> <span id="modalGeofence">Kochi Tech Park HQ Beacon Verified ✅ (42m)</span></div>
+      </div>
+    </div>
   </div>
+
+  <!-- Admin Application Logic -->
+  <script>
+    let employeesData = [];
+    let attendanceMatrix = [];
+    let leaveRequests = [];
+
+    // Navigation Switcher
+    function switchSection(sectionId, btn) {
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Load initial data
+    async function loadAdminData() {
+      await Promise.all([
+        loadEmployees(),
+        loadAttendanceHeatgrid(),
+        loadPayrollData(),
+        loadLeaveDesk()
+      ]);
+    }
+
+    // Load Employees
+    async function loadEmployees() {
+      try {
+        const res = await fetch('/api/employees');
+        const data = await res.json();
+        if (data.success) {
+          employeesData = data.employees;
+          document.getElementById('kpiEmployees').textContent = data.count;
+        }
+      } catch (e) {
+        console.error('Failed to load employees:', e);
+      }
+    }
+
+    // Load 30-Day Attendance Heatgrid
+    async function loadAttendanceHeatgrid() {
+      try {
+        const res = await fetch('/api/attendance?month=2026-10');
+        const data = await res.json();
+        if (!data.success) return;
+
+        attendanceMatrix = data.logs;
+
+        // Render header (Days 1 to 30)
+        const headerRow = document.getElementById('matrixHeaderRow');
+        headerRow.innerHTML = '<th class="emp-col">Employee Profile</th>';
+        for (let d = 1; d <= 30; d++) {
+          const dayPad = d < 10 ? '0' + d : '' + d;
+          const th = document.createElement('th');
+          th.textContent = dayPad;
+          headerRow.appendChild(th);
+        }
+
+        // Render rows for all employees
+        const tbody = document.getElementById('matrixTableBody');
+        tbody.innerHTML = employeesData.map(emp => {
+          let cells = '';
+          for (let d = 1; d <= 30; d++) {
+            const dayPad = d < 10 ? '0' + d : '' + d;
+            const dateStr = `2026-10-${dayPad}`;
+            const log = attendanceMatrix.find(a => a.employee_id === emp.id && a.date === dateStr);
+            
+            let status = log ? log.status : 'WEEKEND';
+            let letter = 'P';
+            let pillClass = 'heat-p';
+
+            if (status === 'LATE') { letter = 'L'; pillClass = 'heat-l'; }
+            else if (status === 'WFH') { letter = 'W'; pillClass = 'heat-w'; }
+            else if (status === 'APPROVED_LEAVE') { letter = 'LV'; pillClass = 'heat-lv'; }
+            else if (status === 'ABSENT') { letter = 'A'; pillClass = 'heat-a'; }
+            else if (status === 'WEEKEND') { letter = '—'; pillClass = 'heat-wo'; }
+
+            const escapedName = emp.first_name + ' ' + emp.last_name;
+            const safeLog = log ? JSON.stringify(log).replace(/"/g, '&quot;') : '';
+
+            cells += `
+              <td>
+                <div class="heat-pill ${pillClass}" onclick="openCellDetail('${escapedName}', ${safeLog})">${letter}</div>
+              </td>
+            `;
+          }
+
+          return `
+            <tr>
+              <td class="emp-name-cell">
+                <div style="font-weight:700; color:#0f172a;">${emp.first_name} ${emp.last_name}</div>
+                <div class="mono" style="font-size:10px; color:#64748b;">${emp.emp_code} • ${emp.designation_title}</div>
+              </td>
+              ${cells}
+            </tr>
+          `;
+        }).join('');
+
+        if (data.summary) {
+          document.getElementById('kpiAttendanceRate').textContent = data.summary.attendance_rate + '%';
+        }
+      } catch (e) {
+        console.error('Failed to load attendance:', e);
+      }
+    }
+
+    // Cell Detail Click Handler
+    function openCellDetail(empName, log) {
+      if (!log) return;
+      document.getElementById('modalEmpName').textContent = empName;
+      document.getElementById('modalDate').textContent = log.date;
+      document.getElementById('modalStatus').textContent = log.status;
+      document.getElementById('modalIn').textContent = log.clock_in || '—';
+      document.getElementById('modalOut').textContent = log.clock_out || '—';
+      document.getElementById('modalHours').textContent = log.total_hours ? log.total_hours + ' hrs' : '0.00 hrs';
+      
+      const coords = log.latitude ? `${log.latitude}° N, ${log.longitude}° E` : '—';
+      document.getElementById('modalCoords').textContent = coords;
+      
+      const geoText = log.geofence_verified ? 'Kochi Tech Park HQ Beacon Verified ✅ (42m radius)' : (log.status === 'WFH' ? 'Remote IP Verified (Out-of-Office)' : 'Not verified');
+      document.getElementById('modalGeofence').textContent = geoText;
+
+      document.getElementById('cellModal').classList.add('active');
+    }
+    function closeCellModal() {
+      document.getElementById('cellModal').classList.remove('active');
+    }
+
+    // Load Payroll Engine Data
+    async function loadPayrollData() {
+      try {
+        const res = await fetch('/api/payroll?month=October%202026');
+        const data = await res.json();
+        
+        // Also fetch full employee payslips preview
+        const payslipsRes = await Promise.all(
+          employeesData.map(e => fetch(`/api/payslips?employee_id=${e.id}&month=October%202026`).then(r => r.json()))
+        );
+
+        let grossSum = 0, epfSum = 0, esicSum = 0, ptSum = 0, tdsSum = 0, netSum = 0;
+        const tbody = document.getElementById('payrollTableBody');
+
+        tbody.innerHTML = payslipsRes.filter(r => r.success && r.payslip).map(r => {
+          const p = r.payslip;
+          grossSum += p.gross_earnings;
+          epfSum += p.epf_employee + p.epf_employer;
+          esicSum += p.esic_employee + p.esic_employer;
+          ptSum += p.professional_tax;
+          tdsSum += p.tds;
+          netSum += p.net_pay;
+
+          return `
+            <tr>
+              <td class="mono" style="font-weight:700;">${p.employee_code}</td>
+              <td><strong>${p.employee_name}</strong><br><span style="font-size:10px; color:#64748b;">${p.designation_title}</span></td>
+              <td class="mono">₹${p.basic_earned.toLocaleString('en-IN')}</td>
+              <td class="mono">₹${p.hra_earned.toLocaleString('en-IN')}</td>
+              <td class="mono">₹${p.special_earned.toLocaleString('en-IN')}</td>
+              <td class="mono" style="font-weight:700;">₹${p.gross_earnings.toLocaleString('en-IN')}</td>
+              <td class="mono">₹${p.epf_employee.toLocaleString('en-IN')}</td>
+              <td class="mono">${p.esic_employee > 0 ? '₹' + p.esic_employee.toLocaleString('en-IN') : '—'}</td>
+              <td class="mono">₹${p.professional_tax}</td>
+              <td class="mono">₹${p.tds.toLocaleString('en-IN')}</td>
+              <td class="mono" style="font-weight:800; color:#15803d;">₹${p.net_pay.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+              <td><span class="badge badge-present">${p.status}</span></td>
+            </tr>
+          `;
+        }).join('');
+
+        document.getElementById('summaryGross').textContent = `₹${grossSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        document.getElementById('summaryEpf').textContent = `₹${epfSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        document.getElementById('summaryEsic').textContent = `₹${esicSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        document.getElementById('summaryPt').textContent = `₹${ptSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        document.getElementById('summaryTds').textContent = `₹${tdsSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        document.getElementById('summaryNet').textContent = `₹${netSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+        document.getElementById('kpiPayrollGross').textContent = `₹${grossSum.toLocaleString('en-IN')}`;
+      } catch (e) {
+        console.error('Failed to load payroll:', e);
+      }
+    }
+
+    // Execute Payroll Run
+    async function executePayrollRun() {
+      try {
+        const res = await fetch('/api/payroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            month_year: 'October 2026',
+            processed_by: 'Sneha Nambiar (HR Director)'
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`✅ Payroll batch ${data.batch.batch_code} executed successfully!\nTotal Net Transfer: ₹${data.summary.total_net.toLocaleString('en-IN')}\nHeadcount: ${data.summary.headcount} Employees.`);
+          loadPayrollData();
+        }
+      } catch (err) {
+        alert('Payroll execution failed: ' + err.message);
+      }
+    }
+
+    // Download NEFT CSV
+    function downloadNeftCsv() {
+      window.location.href = '/api/payroll?download=neft&month=October%202026';
+    }
+
+    // Load Leave Approvals Desk
+    async function loadLeaveDesk() {
+      try {
+        const res = await fetch('/api/leave');
+        const data = await res.json();
+        if (!data.success) return;
+
+        leaveRequests = data.requests;
+        const pendingCount = leaveRequests.filter(r => r.status === 'PENDING').length;
+        document.getElementById('kpiPendingLeaves').textContent = pendingCount;
+        document.getElementById('pendingLeaveBadge').textContent = `${pendingCount} Pending Requests`;
+
+        const tbody = document.getElementById('leaveRequestsBody');
+        tbody.innerHTML = leaveRequests.map(r => {
+          let badgeClass = r.status === 'APPROVED' ? 'badge-present' : (r.status === 'REJECTED' ? 'badge-absent' : 'badge-late');
+
+          const actionButtons = r.status === 'PENDING' ? `
+            <div style="display:flex; gap:6px;">
+              <button class="btn-action-approve" onclick="handleLeaveAction('${r.id}', 'APPROVE')">Approve</button>
+              <button class="btn-action-reject" onclick="handleLeaveAction('${r.id}', 'REJECT')">Reject</button>
+            </div>
+          ` : `<span style="font-size:11px; color:#64748b;">${r.approved_by || 'Processed'}</span>`;
+
+          return `
+            <tr>
+              <td class="mono" style="font-weight:700;">${r.request_code}</td>
+              <td><strong>${r.employee_name}</strong><br><span style="font-size:10px; color:#64748b;">${r.employee_code} • ${r.department_name}</span></td>
+              <td><span class="badge badge-leave">${r.leave_type_code} — ${r.leave_type_name}</span></td>
+              <td class="mono">${r.start_date} → ${r.end_date}</td>
+              <td class="mono" style="font-weight:700;">${r.total_days} Days</td>
+              <td>${r.reason}</td>
+              <td><span class="badge ${badgeClass}">${r.status}</span></td>
+              <td>${actionButtons}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error('Failed to load leave desk:', e);
+      }
+    }
+
+    // Leave Action (Approve / Reject)
+    async function handleLeaveAction(requestId, action) {
+      try {
+        const res = await fetch('/api/leave', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            request_id: requestId,
+            action,
+            approved_by: 'Sneha Nambiar (HR Director)'
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`✅ Leave request ${action === 'APPROVE' ? 'Approved' : 'Rejected'} successfully!`);
+          loadLeaveDesk();
+          loadAttendanceHeatgrid();
+        }
+      } catch (err) {
+        alert('Action failed: ' + err.message);
+      }
+    }
+
+    // Whitelabel Customizer Handlers
+    function saveWhitelabelSettings() {
+      const brand = document.getElementById('adminBrandInput').value.trim();
+      const tagline = document.getElementById('adminTaglineInput').value.trim();
+      const primary = document.getElementById('adminPrimaryInput').value.trim();
+      const wa = document.getElementById('adminWaInput').value.trim();
+
+      const params = new URLSearchParams(window.location.search);
+      if (brand) params.set('brand', brand);
+      if (tagline) params.set('tagline', tagline);
+      if (primary) params.set('primary', primary.replace('#', ''));
+      if (wa) params.set('wa', wa.replace(/[^0-9]/g, ''));
+
+      window.location.search = params.toString();
+    }
+
+    function resetWhitelabelSettings() {
+      window.location.search = '?reset_wl=1';
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAdminData();
+    });
+  </script>
 </body>
 </html>

@@ -1,17 +1,92 @@
+# ============================================================================
+# Docker Compose: Self-Hosted Enterprise HRMS & Payroll Stack
+# Multi-Track Alternative to Cloudflare Pages Edge Runtime
+# Tracks: Frappe HR v15 (ERPNext HRMS) & Odoo 17 Community HR
+# ============================================================================
+
 version: '3.8'
+
 services:
-  app:
-    image: frappe/hrms:latest
+  # Primary Track: Frappe HR v15 Service
+  frappe-hrms:
+    image: frappe/hrms:v15.2.0
     restart: unless-stopped
+    container_name: pulse_frappe_hrms
     ports:
       - "8080:8000"
     environment:
-      - BRAND_NAME=PEOPLEPULSE HRMS
-      - PRIMARY_COLOR=#7C3AED
-  db:
+      - SITE_NAME=pulse-hrms.local
+      - DB_HOST=hrms-db
+      - DB_PORT=3306
+      - DB_PASSWORD=bmad_hrms_secret
+      - BRAND_NAME=Pulse HRMS
+      - PRIMARY_COLOR=#4f46e5
+    depends_on:
+      hrms-db:
+        condition: service_healthy
+    networks:
+      - hrms-net
+
+  # Alternative Track: Odoo 17 HR & Attendance Module
+  odoo-hrms:
+    image: odoo:17.0
+    restart: unless-stopped
+    container_name: pulse_odoo_hrms
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=postgres-db
+      - USER=odoo
+      - PASSWORD=odoo_secret
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - hrms-net
+
+  # MariaDB Database for Frappe HR
+  hrms-db:
+    image: mariadb:10.6
+    restart: unless-stopped
+    container_name: pulse_mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=bmad_root_secret
+      - MYSQL_DATABASE=pulse_hrms
+      - MYSQL_USER=pulse_admin
+      - MYSQL_PASSWORD=bmad_hrms_secret
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hrms-net
+
+  # PostgreSQL Database for Odoo 17
+  postgres-db:
     image: postgres:15-alpine
     restart: unless-stopped
+    container_name: pulse_postgres
     environment:
-      - POSTGRES_USER=bmad
-      - POSTGRES_PASSWORD=bmad_secret
-      - POSTGRES_DB=tpl_lerp_hrms_payroll
+      - POSTGRES_DB=pulse_odoo_hrms
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo_secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d pulse_odoo_hrms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hrms-net
+
+volumes:
+  mariadb_data:
+  postgres_data:
+
+networks:
+  hrms-net:
+    driver: bridge
