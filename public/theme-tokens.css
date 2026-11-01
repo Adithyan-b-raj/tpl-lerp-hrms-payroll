@@ -1,0 +1,17 @@
+/* Extracted via tpl-tools-design-extractor for tpl-lerp-hrms-payroll */
+:root {
+  --font-primary: 'Inter', sans-serif;
+  --font-accent: 'Space Grotesk', sans-serif;
+  --color-primary: #7C3AED;
+  --brand-primary: var(--color-primary);
+  --color-dark: #1E1B4B;
+  --brand-dark: var(--color-dark);
+  --bg-main: #F8FAFC;
+  --bg-canvas: #F5F3FF;
+  --bg-sand: var(--bg-canvas);
+  --border-color: #DDD6FE;
+  --grid-gap-desktop: 28px 22px;
+  --grid-gap-mobile: 16px 14px;
+  --radius: 6px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}

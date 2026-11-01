@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  app:
+    image: frappe/hrms:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8000"
+    environment:
+      - BRAND_NAME=PEOPLEPULSE HRMS
+      - PRIMARY_COLOR=#7C3AED
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=bmad
+      - POSTGRES_PASSWORD=bmad_secret
+      - POSTGRES_DB=tpl_lerp_hrms_payroll
